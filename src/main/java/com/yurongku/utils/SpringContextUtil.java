@@ -1,4 +1,4 @@
-package com.yurongku.util;
+package com.yurongku.utils;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

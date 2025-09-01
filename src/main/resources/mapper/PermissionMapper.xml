@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yurongku.mapper.PermissionMapper">
+
+	<sql id="Base_Column_List">
+		id, permission_name, permission_code, permission_type, parent_id, path, component, icon, description,
+		status, sort_order, created_time, updated_time, created_by, updated_by, is_deleted
+	</sql>
+
+	<select id="selectPagePermissions" resultType="com.yurongku.entity.Permission">
+		SELECT
+		<include refid="Base_Column_List"/>
+		FROM sys_permission
+		<where>
+			is_deleted = 0
+			<if test="keyword != null and keyword != ''">
+				AND (permission_name ILIKE CONCAT('%', #{keyword}, '%')
+				  OR permission_code ILIKE CONCAT('%', #{keyword}, '%')
+				  OR description ILIKE CONCAT('%', #{keyword}, '%'))
+			</if>
+			<if test="status != null">
+				AND status = #{status}
+			</if>
+			<if test="permissionType != null and permissionType != ''">
+				AND permission_type = #{permissionType}
+			</if>
+			<if test="parentId != null">
+				AND parent_id = #{parentId}
+			</if>
+		</where>
+		ORDER BY sort_order ASC, id DESC
+	</select>
+
+	<select id="selectAllPermissions" resultType="com.yurongku.entity.Permission">
+		SELECT
+		<include refid="Base_Column_List"/>
+		FROM sys_permission
+		<where>
+			is_deleted = 0
+			<if test="status != null">
+				AND status = #{status}
+			</if>
+		</where>
+		ORDER BY sort_order ASC, id DESC
+	</select>
+
+</mapper>
+
